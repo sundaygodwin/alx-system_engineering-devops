@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Bash script that displays the content of the current directory 
+
+for file in *-*
+do
+    # Check if it's a regular file and not hidden
+    if [ -f "$file" ] && [[ ! "$file" == .* ]]; then
+        # Extract the part after the first dash
+        new_name=$(echo "$file" | cut -d'-' -f2-)
+        echo "$new_name"
+    fi
+done
