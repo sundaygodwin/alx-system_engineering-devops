@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# manage_my_process Bash script 
+
+case "$1" in
+    "start")
+        if [ -f "/var/run/my_process.pid" ]; then
+            echo "manage_my_process already running."
+        else
+            ./manage_my_process &
+            echo $! > /var/run/my_process.pid
+            echo "manage_my_process started"
+        fi
+        ;;
+    "stop")
+        if [ -f "/var/run/my_process.pid" ]; then
+            pid=$(cat /var/run/my_process.pid)
+            kill "$pid"
+            rm -f "/var/run/my_process.pid"
+            echo "manage_my_process stopped"
+        else
+            echo "manage_my_process is not running."
+        fi
+        ;;
+    "restart")
+        if [ -f "/var/run/my_process.pid" ]; then
+            pid=$(cat /var/run/my_process.pid)
+            kill "$pid"
+            rm -f "/var/run/my_process.pid"
+        fi
+        ./manage_my_process &
+        echo $! > /var/run/my_process.pid
+        echo "manage_my_process restarted"
+        ;;
+    *)
+        echo "Usage: manage_my_process {start|stop|restart}"
+        ;;
+esac

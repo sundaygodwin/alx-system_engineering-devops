@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Bash script displays scripts in task 4
+
+trap 'echo "I am invincible!!!"; exit' SIGTERM
+
+while true; do
+    echo "To infinity and beyond"
+    sleep 2
+done

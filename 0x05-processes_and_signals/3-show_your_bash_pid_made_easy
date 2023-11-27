@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Write a Bash script that displays the PID, 
+# along with the process name, of processes 
+# whose name contain the word bash.
+
+for pid in /proc/*/; do
+    pid=${pid%*/}  # Extract the PID from the directory path
+    if [[ -f "$pid/cmdline" && -f "$pid/status" ]]; then
+        name=$(tr '\0' ' ' < "$pid/cmdline")  # Get the process name
+        if [[ "$name" == *bash* ]]; then
+            pid_number=$(basename "$pid")  # Extract the PID number
+            echo "PID: $pid_number, Process Name: $name"
+        fi
+    fi
+done
