@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # Sample data (you'll need to replace this with actual data retrieval logic)
 # Assume messages are stored in a list of dictionaries or any appropriate data structure
 messages_data = [
