@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Bash script that configures an Ubuntu server with:
+# localhost resolves to 127.0.0.2 and 
+# facebook.com resolves to 8.8.8.8
+
+# Check if script is executed with root privileges
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root or using sudo."
+    exit 1
+fi
+
+# Define the desired mappings
+host_mappings=(
+    "127.0.0.2    localhost"
+    "8.8.8.8      facebook.com"
+)
+
+# Backup the original hosts file
+cp /etc/hosts /etc/hosts.backup
+
+# Add or update host mappings in /etc/hosts
+for mapping in "${host_mappings[@]}"; do
+    if grep -q "${mapping##* }" /etc/hosts; then
+        sed -i "s/.*${mapping##* }/$mapping/" /etc/hosts
+    else
+        echo "$mapping" >> /etc/hosts
+    fi
+done
+
+# Display updated hosts file
+echo "Updated /etc/hosts file:"
+cat /etc/hosts
