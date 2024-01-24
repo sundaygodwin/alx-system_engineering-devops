@@ -1,21 +1,12 @@
 #!/usr/bin/env bash
-# Configures Nginx server so that it redirects to another page.
-# The redirection is configured as a "301 Moved Permanently"
+# This script configures the nginx server so that /redirect_me is redirecting to
+# a new page.
 
-apt-get update
-apt-get install -y nginx
-
-mkdir /etc/nginx/html
-touch /etc/nginx/html/index.html
-echo "Holberton School" > /etc/nginx/html/index.html
-printf %s "server {
-    listen 80;
-    listen [::]:80 default_server;
-    root   /etc/nginx/html;
-    index  index.html index.htm;
-    location /redirect_me {
-        return 301 http://cuberule.com/;
-    }
-}" > /etc/nginx/sites-available/default
-
-service nginx restart
+sudo apt update
+sudo apt install nginx -y
+sudo ufw allow 22
+sudo ufw allow 80
+sudo ufw enable
+echo 'Hello World!' | sudo tee /var/www/html/index.nginx-debian.html > /dev/null
+sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
+sudo service nginx restart
